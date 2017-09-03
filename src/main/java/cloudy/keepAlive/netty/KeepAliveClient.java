@@ -2,8 +2,6 @@ package cloudy.keepAlive.netty;
 
 import cloudy.keepAlive.entity.Request;
 import cloudy.keepAlive.entity.Response;
-import cloudy.keepAlive.netty.ClientChannelHandler;
-import cloudy.keepAlive.netty.ConcurrentResponse;
 import com.alibaba.fastjson.JSONObject;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
@@ -22,13 +20,11 @@ import io.netty.handler.codec.string.StringEncoder;
  * Created by 7cc on 2017/9/2
  */
 public class KeepAliveClient {
-    public static final EventLoopGroup workerGroup;
-    public static final Bootstrap bootstrap;
     public static ChannelFuture channelFuture;
 
     static {
-        workerGroup = new NioEventLoopGroup();
-        bootstrap = new Bootstrap();
+        EventLoopGroup workerGroup = new NioEventLoopGroup();
+        Bootstrap bootstrap = new Bootstrap();
         try {
             bootstrap.group(workerGroup)
                     .channel(NioSocketChannel.class)
@@ -51,10 +47,10 @@ public class KeepAliveClient {
 
     public static Object send(Request request) {
         try {
-            channelFuture.channel().writeAndFlush(JSONObject.toJSONString(request));
-            channelFuture.channel().writeAndFlush("\r\n");
+            channelFuture.channel().write(JSONObject.toJSONString(request));
             ConcurrentResponse concurrentResponse = new ConcurrentResponse(request);
-            Response response = concurrentResponse.get(10);
+            channelFuture.channel().writeAndFlush("\r\n");
+            Response response = concurrentResponse.get(3);
             return response;
         } catch (Exception e){
             e.printStackTrace();

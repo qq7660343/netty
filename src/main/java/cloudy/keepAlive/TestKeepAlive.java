@@ -11,7 +11,7 @@ public class TestKeepAlive {
 
     public static void main(String[] args) throws InterruptedException {
         for (int i = 0; i < 1000; i++) {
-            if(i == 1) Thread.sleep(1000);
+            if(i == 1) Thread.sleep(2000);
             Request request = new Request();
             request.setIdentifier("getUserName");
             request.setContent(new User(7 + i, "7cc" + i, 77 + i));

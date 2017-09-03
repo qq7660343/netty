@@ -18,10 +18,10 @@ public class ClientChannelHandler extends ChannelInboundHandlerAdapter {
                 ctx.writeAndFlush("client ping\r\n");
                 System.out.println("heart ping...");
                 return;
-        }
+            }
 //        System.out.println(String.format("client receive response msg = %s", msgString));
-        Response response = JSONObject.parseObject(msgString, Response.class);
-        ConcurrentResponse.receive(response);
+            Response response = JSONObject.parseObject(msgString, Response.class);
+            ConcurrentResponse.receive(response);
         }
 
 

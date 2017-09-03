@@ -1,0 +1,6 @@
+option java_package = "cloudy.protobuf.entity";
+option java_outer_classname = "ResponseMsgProbuf";
+  
+  message  ResponseMsg {
+    required bytes response = 1;
+}
